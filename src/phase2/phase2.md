@@ -26,13 +26,13 @@ In Phase 2, the goal was to analyze the simulated botnet traffic from Phase 1 an
 
 ### Key Insights:
 - **Packet Size Distribution**: The uniformity in packet sizes suggests that the bots sent similar-sized commands to the C2 server.
-  - ![Packet Size Distribution](../results/packet_size_distribution.png)
+  - ![Packet Size Distribution](../results/phase2/packet_size_distribution.png)
   
 - **Communication Frequency**: Each bot communicated with the C2 server exactly once, reflecting a low-level botnet simulation with consistent C&C behavior.
-  - ![Communication Frequency](../results/cnc_request_frequency.png)
+  - ![Communication Frequency](../results/phase2/cnc_request_frequency.png)
   
 - **Traffic Volume Over Time**: There was no noticeable spike in traffic volume, which suggests that the traffic was evenly distributed over time without major bursts.
-  - ![Traffic Volume Over Time](../results/traffic_volume_over_time.png)
+  - ![Traffic Volume Over Time](../results/phase2/traffic_volume_over_time.png)
 
 ### Deliverables:
 - **traffic_analysis.py**: Script for parsing and pre-processing the traffic data.
