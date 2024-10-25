@@ -2,9 +2,9 @@
 traffic_visualization.py
 
 This script generates visualizations of the analyzed network traffic using Matplotlib. The visualizations include:
-- The frequency of C&C requests over time
-- The size of packets exchanged between bots and the C2 server
-- The overall traffic volume over time
+- Packet Size Distribution: Histogram showing the distribution of packet sizes.
+- Communication Frequency: Bar chart showing the frequency of communication between bots and the C2 server.
+- Traffic Volume Over Time: Line graph showing the total packet size transferred over time.
 
 The generated graphs will be saved in the /results/ directory for further analysis and documentation.
 """
@@ -16,66 +16,73 @@ import os
 # Ensure the /results directory exists
 os.makedirs('../results', exist_ok=True)
 
-# Load the extracted data from CSV files
-packet_sizes = pd.read_csv('extracted_packet_sizes.csv')
-communication_freq = pd.read_csv('extracted_communication_frequency.csv')
-traffic_volume = pd.read_csv('extracted_traffic_volume.csv')
+# Load the CSV files generated from Step 2 using raw strings for the file paths
+packet_sizes = pd.read_csv(r'C:\Users\hailey\botnet-detection-ml-techniques\src\processed_data\extracted_packet_sizes.csv')
+communication_freq = pd.read_csv(r'C:\Users\hailey\botnet-detection-ml-techniques\src\processed_data\extracted_communication_frequency.csv')
+traffic_volume = pd.read_csv(r'C:\Users\hailey\botnet-detection-ml-techniques\src\processed_data\extracted_traffic_volume.csv')
 
-def plot_packet_sizes(df):
+# Step 1: Generate Packet Size Distribution Histogram
+def plot_packet_size_distribution(df):
     """
-    Plot the distribution of packet sizes.
+    Plot a histogram showing the distribution of packet sizes.
     
     Args:
-    df (DataFrame): Data containing packet sizes
+    df (DataFrame): DataFrame containing packet size data
     """
-    plt.figure(figsize=(10, 6))
-    plt.hist(df['packet_size'], bins=20, color='blue', edgecolor='black')
+    plt.figure(figsize=(8, 6))
+    plt.hist(df['packet_size'], bins=10, color='skyblue', edgecolor='black')
     plt.title('Packet Size Distribution')
-    plt.xlabel('Packet Size (bytes)')
+    plt.xlabel('Packet Size (Bytes)')
     plt.ylabel('Frequency')
     plt.grid(True)
     plt.savefig('../results/packet_size_distribution.png')
-    plt.show()
+    plt.close()
 
+# Step 2: Generate Communication Frequency Bar Chart
 def plot_communication_frequency(df):
     """
-    Plot the communication frequency between bots and the C2 server.
+    Plot a bar chart showing the communication frequency between bots and the C2 server.
     
     Args:
-    df (DataFrame): Data containing communication frequency
+    df (DataFrame): DataFrame containing communication frequency data
     """
-    plt.figure(figsize=(10, 6))
-    plt.bar(df['bot_ip'], df['communication_count'], color='green')
+    plt.figure(figsize=(8, 6))
+    plt.bar(df['src_ip'], df['communication_count'], color='salmon')
     plt.title('Communication Frequency Between Bots and C2 Server')
-    plt.xlabel('Bot IP')
+    plt.xlabel('Bot IP Address')
     plt.ylabel('Number of Communications')
     plt.grid(True)
     plt.savefig('../results/cnc_request_frequency.png')
-    plt.show()
+    plt.close()
 
-def plot_traffic_volume(df):
+# Step 3: Generate Traffic Volume Over Time Line Graph
+def plot_traffic_volume_over_time(df):
     """
-    Plot the total traffic volume over time.
+    Plot a line graph showing the traffic volume (packet count) over time.
     
     Args:
-    df (DataFrame): Data containing traffic volume over time
+    df (DataFrame): DataFrame containing traffic volume data
     """
     plt.figure(figsize=(10, 6))
-    plt.plot(df['timestamp'], df['packet_size'], marker='o', color='red')
+    plt.plot(df['timestamp'], df['packet_count'], marker='o', linestyle='-', color='purple')
     plt.title('Traffic Volume Over Time')
-    plt.xlabel('Timestamp')
-    plt.ylabel('Total Packet Size (bytes)')
+    plt.xlabel('Time')
+    plt.ylabel('Packet Count')
+    plt.xticks(rotation=45)
     plt.grid(True)
+    plt.tight_layout()
     plt.savefig('../results/traffic_volume_over_time.png')
-    plt.show()
+    plt.close()
 
 if __name__ == "__main__":
-    # Plot 1: Packet Size Distribution
-    plot_packet_sizes(packet_sizes)
-
-    # Plot 2: Communication Frequency Between Bots and C2 Server
+    # Generate the visualizations
+    print("Generating packet size distribution...")
+    plot_packet_size_distribution(packet_sizes)
+    
+    print("Generating communication frequency chart...")
     plot_communication_frequency(communication_freq)
-
-    # Plot 3: Traffic Volume Over Time
-    plot_traffic_volume(traffic_volume)
-
+    
+    print("Generating traffic volume over time graph...")
+    plot_traffic_volume_over_time(traffic_volume)
+    
+    print("All visualizations have been generated and saved in the /results/ directory.")

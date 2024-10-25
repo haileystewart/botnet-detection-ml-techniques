@@ -1,40 +1,45 @@
 # Phase 2: Network Traffic Analysis
 
 ## Overview
-In Phase 2, the goal is to analyze the simulated botnet traffic from Phase 1 and extract key patterns that can be used to improve botnet detection methods.
+In Phase 2, the goal was to analyze the simulated botnet traffic from Phase 1 and extract key patterns that can be used to improve botnet detection methods. We successfully pre-processed the captured traffic, extracted meaningful features, and visualized the traffic patterns, which provided insights into the botnet's communication with the C2 server.
 
 ### Key Tasks:
 1. **Pre-process the Captured Traffic (traffic_analysis.py)**:
-   - Use the Wireshark-captured network traffic from Phase 1 as the input.
-   - Extract key features such as:
-     - Packet size
-     - Protocol type
-     - Time intervals between packets
-     - Frequency of C&C requests
+   - We used the Wireshark-captured network traffic from Phase 1 as input.
+   - The following key features were extracted:
+     - **Packet size**: Packet size distribution allowed us to see the data volume and trends in communication.
+     - **Protocol type**: All communications used the TCP protocol.
+     - **Time intervals between packets**: Time intervals helped track the frequency and timing of bot communications.
+     - **Frequency of C&C requests**: Frequency of communications between the bots and the C2 server was tracked to understand botnet behavior.
 
 2. **Feature Extraction (feature_extraction.py)**:
-   - Process the data to identify key traffic features like:
-     - Packet size distribution
-     - Communication frequency between the bots and C2 server
-     - Traffic volume (data transferred over time)
-   - These features will help in analyzing the botnet's activity patterns.
+   - We processed the data to identify key traffic features, including:
+     - **Packet size distribution**: The extracted packet sizes showed how much data was being transferred per communication.
+     - **Communication frequency between bots and the C2 server**: Each bot communicated with the C2 server exactly once, with no further communication recorded in this simulation.
+     - **Traffic volume over time**: The total traffic volume was low and consistent over time, without significant spikes.
 
 3. **Traffic Pattern Identification and Visualization (traffic_visualization.py)**:
-   - Use the extracted features to identify botnet traffic patterns.
-   - Visualize these patterns with **Matplotlib** and save the graphs in the `/results/` directory.
-   - Graphs will show:
-     - Frequency of C&C requests
-     - Packet sizes and overall traffic volume over time
+   - We visualized the traffic patterns using **Matplotlib**, generating the following graphs:
+     - **Packet Size Distribution**: Showed a uniform distribution of packet sizes between 73 and 79 bytes.
+     - **Communication Frequency**: All three bots communicated once with the C2 server, and no bot communicated more frequently than another.
+     - **Traffic Volume Over Time**: Showed a steady traffic pattern without fluctuations, indicating consistent communication without high traffic bursts.
 
-### Expected Deliverables:
+### Key Insights:
+- **Packet Size Distribution**: The uniformity in packet sizes suggests that the bots sent similar-sized commands to the C2 server.
+  - ![Packet Size Distribution](../results/packet_size_distribution.png)
+  
+- **Communication Frequency**: Each bot communicated with the C2 server exactly once, reflecting a low-level botnet simulation with consistent C&C behavior.
+  - ![Communication Frequency](../results/cnc_request_frequency.png)
+  
+- **Traffic Volume Over Time**: There was no noticeable spike in traffic volume, which suggests that the traffic was evenly distributed over time without major bursts.
+  - ![Traffic Volume Over Time](../results/traffic_volume_over_time.png)
+
+### Deliverables:
 - **traffic_analysis.py**: Script for parsing and pre-processing the traffic data.
 - **feature_extraction.py**: Script for extracting meaningful traffic features.
 - **traffic_visualization.py**: Script for visualizing the traffic patterns.
-- **Traffic graphs**: Stored in `/results/` as `.png` files.
-
-### How to Run the Scripts:
-1. **Step 1**: Run `traffic_analysis.py` to process the raw Wireshark data and extract relevant features.
-2. **Step 2**: Run `feature_extraction.py` to analyze the traffic data for packet size, protocol types, and frequency of communication.
-3. **Step 3**: Run `traffic_visualization.py` to generate visual representations of the data (graphs) and save them in `/results/`.
-
----
+- **Traffic graphs**:
+  - packet_size_distribution.png
+  - cnc_request_frequency.png
+  - traffic_volume_over_time.png
+  - All stored in `/results/` as `.png` files.
